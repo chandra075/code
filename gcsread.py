@@ -13,3 +13,4 @@ df.write.format("bigquery")\
     .option("project", "woven-mesh-233413")\
     .option("table", "woven-mesh-233413.etl.plit")
 print("run successfully")
+df.show()
