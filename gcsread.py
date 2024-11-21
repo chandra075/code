@@ -6,7 +6,23 @@ spark = SparkSession.builder \
     .appName("test") \
     .getOrCreate()
 #logger= Log4j(spark)
-df = spark.read.format("csv").option("header","true").\
+df1 = spark.read.format("csv").option("header","true").\
      load(r"gs://chandra75/toydata/retail.csv")
 
-df.show(1)
+df1.show(1)
+#Raading from BigQuery
+#df2 = spark.read.format("bigquery")\
+#.option("parentProject","woven-mesh-233413")\
+#.option("project","woven-mesh-233413")\
+#.option("table","woven-mesh-233413.gcp_etl.plit").load()
+# Reading from gs:// and Writing a table in BQ in a new table if not there
+
+df1.write.format("bigquery") \
+    .option("parentProject", "woven-mesh-233413") \
+    .option("project", "woven-mesh-233413") \
+    .option("table", "woven-mesh-233413.etl.new") \
+    .option("writeMethod", "direct") \
+    .option("createDisposition", "CREATE_IF_NEEDED") \
+    .mode("append") \
+    .save()
+print("Done")
